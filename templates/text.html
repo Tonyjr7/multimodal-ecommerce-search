@@ -1,0 +1,32 @@
+
+{% extends "base.html" %}
+{% block content %}
+    <h2 class="text-center mb-4">🔍 Text Query Interface</h2>
+    <p class="text-muted text-center">Ask specifically for what you want (e.g., "I need a red alarm clock").</p>
+    
+    <div class="input-group mb-3">
+        <input type="text" id="queryInput" class="form-control" placeholder="Enter your search query...">
+        <button class="btn btn-primary" onclick="submitText()">Search</button>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function submitText() {
+        const query = document.getElementById('queryInput').value;
+        if (!query) return;
+        showLoading(true);
+        
+        const res = await fetch('/api/text', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({query: query})
+        });
+        const data = await res.json();
+        
+        showLoading(false);
+        renderText(data.message);
+        renderTable(data.products, "Recommended Products");
+    }
+</script>
+{% endblock %}

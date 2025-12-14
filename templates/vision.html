@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}
+{% block content %}
+    <h2 class="text-center mb-4">📸 Product Image Interface</h2>
+    <p class="text-muted text-center">Upload a photo of a product to identify it using our CNN.</p>
+    
+    <div class="text-center">
+        <input type="file" id="visionInput" class="form-control mb-3" accept="image/*">
+        <button class="btn btn-success" onclick="submitVision()">Identify Product</button>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function submitVision() {
+        const file = document.getElementById('visionInput').files[0];
+        if (!file) return alert("Select a file!");
+        
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        showLoading(true);
+        const res = await fetch('/api/vision', {method: 'POST', body: formData});
+        const data = await res.json();
+        
+        showLoading(false);
+        
+        let html = `
+            <div class="alert alert-success">
+                <h4>Detected: ${data.detected_product}</h4>
+                <p>Stock Code: ${data.detected_stock_code}</p>
+                <p>Confidence: ${data.confidence}</p>
+            </div>
+        `;
+        document.getElementById('resultsArea').innerHTML = html;
+        renderTable(data.similar_products, "Similar Items in Inventory");
+    }
+</script>
+{% endblock %}

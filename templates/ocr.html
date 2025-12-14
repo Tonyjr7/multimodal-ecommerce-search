@@ -1,0 +1,33 @@
+
+{% extends "base.html" %}
+{% block content %}
+    <h2 class="text-center mb-4">✍️ Handwritten Query Interface</h2>
+    <p class="text-muted text-center">Upload an image of handwritten text (e.g., a sticky note).</p>
+    
+    <div class="text-center">
+        <input type="file" id="ocrInput" class="form-control mb-3" accept="image/*">
+        <button class="btn btn-warning" onclick="submitOCR()">Upload & Decipher</button>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function submitOCR() {
+        const file = document.getElementById('ocrInput').files[0];
+        if (!file) return alert("Select a file!");
+        
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        showLoading(true);
+        const res = await fetch('/api/ocr', {method: 'POST', body: formData});
+        const data = await res.json();
+        
+        showLoading(false);
+        if(data.error) return alert(data.error);
+        
+        renderText(`I read: "<b>${data.detected_text}</b>"`);
+        renderTable(data.products, "Products Matching Handwriting");
+    }
+</script>
+{% endblock %}
