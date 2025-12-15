@@ -16,7 +16,7 @@ pinecone-client==3.0.0
 sentence-transformers==2.2.2
 
 # --- OCR ---
-pytesseract==0.3.10
+easyocr
 
 # --- Utilities ---
 requests==2.31.0
