@@ -23,6 +23,9 @@ logger = logging.getLogger(__name__)
 # --- CONFIGURATION ---
 PINECONE_API_KEY = settings.PINECONE_API_KEY
 
+# EasyOCR Initialization
+ocr_reader = easyocr.Reader(['en']) 
+
 app = Flask(__name__)
 
 # 1. Load Recommendation Models
