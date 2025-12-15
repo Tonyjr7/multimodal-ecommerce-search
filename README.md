@@ -17,7 +17,7 @@ An intelligent product search system that combines **text search**, **handwritin
 
 ### 2. **Handwriting Recognition (OCR)** ✍️
 - Upload handwritten product queries
-- Tesseract OCR for text extraction
+- EasyOCR OCR for text extraction
 - Intelligent product matching
 
 ### 3. **Visual Product Search** 📸
@@ -54,7 +54,7 @@ An intelligent product search system that combines **text search**, **handwritin
 - Python 3.10+
 - Docker & Docker Compose (for containerized deployment)
 - Pinecone API Key ([Get one here](https://www.pinecone.io/))
-- Tesseract OCR (for local development)
+- EasyOCR OCR (for local development)
 
 ### Option 1: Docker Deployment (Recommended)
 
@@ -188,7 +188,7 @@ file: <image-file>
 | **ML Framework** | TensorFlow 2.15 |
 | **Vector DB** | Pinecone |
 | **Embeddings** | Sentence Transformers |
-| **OCR** | Tesseract + PyTesseract |
+| **OCR** | EasyOCR |
 | **Server** | Gunicorn (Production) |
 | **Containerization** | Docker + Docker Compose |
 
