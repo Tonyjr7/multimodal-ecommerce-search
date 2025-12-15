@@ -10,6 +10,7 @@ from pinecone import Pinecone
 from sentence_transformers import SentenceTransformer
 from PIL import Image
 import logging
+import easyocr
 
 from utils.ocr import ocr_core
 from utils.image_processor import prepare_image
@@ -39,7 +40,6 @@ with open(settings.CLASS_NAMES_PATH, 'rb') as f:
 # 3. Load Data & Fallbacks
 try:
     df = pd.read_csv(settings.DATA_PATH)
-    # Ensure lookups are robust (strip spaces, strings)
     product_lookup = df.set_index(df['StockCode'].astype(str).str.strip())['Description'].to_dict()
 except Exception as e:
     logger.warning(f"Could not load data from {settings.DATA_PATH}: {e}")
@@ -102,23 +102,25 @@ def api_text():
 def api_ocr():
     if 'file' not in request.files: return jsonify({"error": "No file"}), 400
     file = request.files['file']
-    
     try:
-        # 1. Run OCR
-        detected_text = ocr_core(file)
+        # Read file bytes
+        file_bytes = file.read()
+        
+        # expected result format: [[bbox, text, conf], [bbox, text, conf]]
+        result = ocr_reader.readtext(file_bytes)
+        
+        # Combine all detected words into one sentence
+        detected_text = " ".join([res[1] for res in result])
         
         if not detected_text or len(detected_text) < 2:
-            return jsonify({"error": "No text detected. Try writing clearer."}), 400
+            return jsonify({"error": "Could not read handwriting. Try writing clearer."}), 400
 
-        # 3. Search Pinecone
+        print(f"DEBUG OCR Read: {detected_text}") # debug printing on collab
+
+        # Search Pinecone Index
         vector = embed_model.encode(detected_text).tolist()
         results = pinecone_index.query(vector=vector, top_k=5, include_metadata=True)
-        
-        return jsonify({
-            "detected_text": detected_text, 
-            "products": [m['metadata'] for m in results['matches']]
-        })
-        
+        return jsonify({"detected_text": detected_text, "products": [m['metadata'] for m in results['matches']]})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
