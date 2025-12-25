@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify
 import logging
+import easyocr
 
 from routes.text_route import text_search_bp
 from routes.ocr_route import ocr_search_bp
