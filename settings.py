@@ -3,7 +3,12 @@ Configuration settings for AI E-commerce Search application.
 Loads environment variables with proper defaults and validation.
 """
 import os
+import logging
 from decouple import config
+
+# Configure Logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Pinecone Configuration
 PINECONE_API_KEY = config('PINECONE_API_KEY', default='')
@@ -31,10 +36,10 @@ if not PINECONE_API_KEY:
 
 # Validate file paths
 if not os.path.exists(DATA_PATH):
-    print(f"Warning: Data file not found at {DATA_PATH}")
+    logger.warning(f"Data file not found at {DATA_PATH}")
 
 if not os.path.exists(CNN_MODEL_PATH):
-    print(f"Warning: CNN model not found at {CNN_MODEL_PATH}")
+    logger.warning(f"CNN model not found at {CNN_MODEL_PATH}")
 
 if not os.path.exists(CLASS_NAMES_PATH):
-    print(f"Warning: Class names file not found at {CLASS_NAMES_PATH}")
+    logger.warning(f"Class names file not found at {CLASS_NAMES_PATH}")

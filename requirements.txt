@@ -16,15 +16,7 @@ pinecone
 sentence-transformers==2.2.2
 
 # --- OCR ---
-pytesseract==0.3.10
+easyocr==1.5.2
 
 # --- Utilities ---
 requests==2.31.0
-
-# --- Optional: Development/Training ---
-# Uncomment if needed for training or scraping
-# pyngrok==7.0.1
-# duckduckgo_search==4.1.0
-# fastdownload==0.0.7
-# fastcore==1.5.29
-# matplotlib==3.8.2

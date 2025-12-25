@@ -76,7 +76,5 @@ data/
 *.swp
 *~
 
-# Docker
-.dockerignore
-
 x.py
+new.py
