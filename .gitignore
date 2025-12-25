@@ -33,7 +33,6 @@ venv.bak/
 .idea/
 
 # VS Code
-.vscode/
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -76,7 +75,9 @@ data/
 *.swp
 *~
 
-# Docker
-.dockerignore
-
 x.py
+new.py
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
+branch_structure.json
